@@ -1,7 +1,5 @@
---- 
-title: Technologies that changed my perception of software development
-series: [myFirstSeries]
----
+NOTE: THIS IS PART 3/4 FOR MY TUTORIAL THAT CAN BE FOUND ON DEV.TO LINK TO DEV.TO ( UNPUBLISHED ) - https://dev.to/mstokluska/technologies-that-changed-my-perception-of-software-development-514o-temp-slug-9091855?preview=b2b0b8ac7f06850f80c48acef4b4ecabbcc4bc9e17ac24aaee54a92d445a726b93f98d34d347f67c5d3790bb21672185625b38f389f912606739cfdf
+
 
 ----
 # <center>GraphQL</center>
