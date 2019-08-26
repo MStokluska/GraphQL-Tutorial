@@ -25,7 +25,6 @@ type User {
     lastName: String!
     title: String!
     email: String
-    taskId: ID!
 }
 
 type Task {
@@ -76,7 +75,6 @@ type User {
     lastName: String!
     title: String!
     email: String
-    taskId: ID!
 }
 
 type Task {
@@ -202,7 +200,7 @@ The reason why it is not working is that we have not specified what data should 
 const resolvers = {
     Task: {
         assignedTo(task) {
-            return users.filter(u => u.taskId.includes(task.id));
+            return users.filter(u => u.id.includes(task.assignedTo));
         },
     },
 
@@ -217,7 +215,7 @@ const resolvers = {
     },
 };
 ```
-So, when ``assignedTo`` is accessed, we are going to filter through an array of users and return a user that has the `taskId` of matching `Task.id`. 
+So, when ``assignedTo`` is accessed, we are going to filter through an array of users and return a user that has the `id` same as `assignedTo` from `Task` object.
 
 Now our query should work just fine and I recommend you to play a little bit with queries in the playground to get a better understanding of GraphQL.
 
@@ -272,15 +270,10 @@ const { tasks, users } = require('../db');
 const resolvers = {
     Task: {
         assignedTo(task) {
-            return users.filter(u => u.taskId.includes(task.id));
+            return users.filter(u => u.id.includes(task.assignedTo));
         },
     },
-    User: {
-        task(user) {
-          return tasks.filter(t => t.assignedTo.includes(user.id));
-        },
-      },
-
+    
     Query: {
         tasks() {
             return tasks;
@@ -336,14 +329,9 @@ removeTask(id: ID!): [Task!]!
 const resolvers = {
     Task: {
         assignedTo(task) {
-            return users.filter(u => u.taskId.includes(task.id));
+            return users.filter(u => u.id.includes(task.assignedTo));
         },
     },
-    User: {
-        task(user) {
-          return tasks.filter(t => t.assignedTo.includes(user.id));
-        },
-      },
 
     Query: {
         tasks() {
@@ -368,9 +356,6 @@ const resolvers = {
             status: args.status,
             assignedTo: args.assignedTo,
           };
-
-            let taskAssignedUser = users.find(u => u.id === args.assignedTo);
-            taskAssignedUser.taskId = taskAssignedUser.taskId + args.id;
     
             tasks.push(newTask);
     
@@ -393,13 +378,4 @@ And just like with the first mutation give it a try in the playground!
 
 I think by now you should have a good idea what you can do with GraphQL and what is the difference between GraphQL and REST - all those queries and mutations we went through used one endpoint and the client dictates what he wants from the server which can hugely improve the speed of our responses! Another huge success of GraphQL is that it allows receiving many resources in a single request! Imagine that on one of your pages you need access to both tasks and user - you can do it by sending one query! To me, understanding GraphQL changed the way I look at client-server architecture - simply because I'm finding it so amazing and easy to work with that I regret I only got to know it now! I really do hope you will enjoy it as well!
 
-Now, let's head straight for our last part - absolutely mind-blowing Graphback! 
-
-
-
-
- 
-
-
-
- 
+Now, let's head straight for our last part - absolutely mind-blowing Graphback!  
