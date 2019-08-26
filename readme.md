@@ -288,6 +288,7 @@ const resolvers = {
             return users[findIndex]
         }
     },
+    
     Mutation: {
         addTask(parent, args, context) {
           const newTask = {
@@ -303,7 +304,7 @@ const resolvers = {
     
             tasks.push(newTask);
     
-            return newTask;
+            return tasks;
         },
     }
 };
@@ -314,7 +315,7 @@ What we are doing in about ``addTask`` mutation is:
 - Creating a new task based on passed in parameters
 - As our task contains assignedTo we need also need to push new task id to an existing user.
 - Push new task to the task array
-- Return added task
+- Return updated list of tasks
 
 You can view our newly created mutation in action by visiting the playground:
 
