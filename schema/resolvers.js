@@ -6,11 +6,6 @@ const resolvers = {
             return users.filter(u => u.taskId.includes(task.id));
         },
     },
-    User: {
-        task(user) {
-            return tasks.filter(t => t.assignedTo.includes(user.id));
-        },
-    },
 
     Query: {
         tasks() {
@@ -43,7 +38,6 @@ const resolvers = {
 
             return newTask;
         },
-
         removeTask(parent, args, context) {
             const taskIndex = tasks.findIndex(t => t.id === args.id);
 
@@ -51,6 +45,7 @@ const resolvers = {
 
             return tasks;
         },
+
     }
 };
 

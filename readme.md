@@ -1,31 +1,18 @@
-<<<<<<< HEAD
 NOTE: THIS IS PART 3/4 FOR MY TUTORIAL THAT CAN BE FOUND ON DEV.TO LINK TO DEV.TO ( UNPUBLISHED ) - https://dev.to/mstokluska/technologies-that-changed-my-perception-of-software-development-514o-temp-slug-9091855?preview=b2b0b8ac7f06850f80c48acef4b4ecabbcc4bc9e17ac24aaee54a92d445a726b93f98d34d347f67c5d3790bb21672185625b38f389f912606739cfdf
-=======
-
->>>>>>> master
 
 ----
 # <center>GraphQL</center>
 ----
 
-<<<<<<< HEAD
 GraphQL is a query language invented by Facebook and is an alternative approach to REST for designing and building API. Schema is at the center of any GraphQL server and describes functionality available to clients. Schema has types which define:
 - Relationships between entities - in our case it would be a relationship between users and tasks 
-=======
-GraphQL is a query language invented by Facebook and is an alternative approach to REST for designing and building APIs. Schema is at the center of any GraphQL server and describes functionality available to clients. Schema has types which define:
-- Relationships between entities - in our case it would be a relationship between users and tasks
->>>>>>> master
 - Data manipulation and operation that can be executed by the client, in our project those will be for example queries to fetch all users or all tasks, and mutations to delete and add a user or a task.
 
 To build our GraphQL server we are going to use the "Schema First" approach, which basically prioritizes building schema in development. It allows me to visualize the data flow between entities and queries/mutations that I might require! We are also going to use Apollo framework for GraphQL server, a library that helps us connect our GraphQL schema to a node server, which is same as express framework for REST. 
 
 ## Requirements
 
-<<<<<<< HEAD
 - [Rest in 10 minutes](https://dev.to/mstokluska/rest-4559-temp-slug-1084036?preview=499edc364810a5d0d706a9427deaf0d51e9edc299c1356589b1740a15199a655106aa2dd7174005c025caedbf6511c5deeba9d52bb6628ad22e8f5ef) completed
-=======
-- [Rest in 5 minutes](https://dev.to/mstokluska/rest-4559-temp-slug-1084036?preview=499edc364810a5d0d706a9427deaf0d51e9edc299c1356589b1740a15199a655106aa2dd7174005c025caedbf6511c5deeba9d52bb6628ad22e8f5ef) completed
->>>>>>> master
 
 ## Let's get started
 
@@ -58,19 +45,11 @@ $ npm install apollo-server-express graphql
 - Next, edit our ```index.ts``` file.
 ```js
 const express = require('express');
-<<<<<<< HEAD
-=======
-const cors = require('cors');
->>>>>>> master
 const { ApolloServer } = require('apollo-server-express');
 const schema = require('./schema');
 
 const app = express();
 
-<<<<<<< HEAD
-=======
-app.use(cors());
->>>>>>> master
 app.use(express.json());
 
 const server = new ApolloServer({ schema });
@@ -147,19 +126,11 @@ module.exports = makeExecutableSchema({ resolvers, typeDefs });
 In this step we have made an executable schema that contains both, our resolvers and typeDefs so it can be used in our ``index.js``
 ```js
 const express = require('express');
-<<<<<<< HEAD
-=======
-const cors = require('cors');
->>>>>>> master
 const { ApolloServer } = require('apollo-server-express');
 const schema = require('./schema'); <-----------------------------
 
 const app = express();
 
-<<<<<<< HEAD
-=======
-app.use(cors());
->>>>>>> master
 app.use(express.json());
 
 const server = new ApolloServer({ schema });<---------------------
@@ -427,11 +398,8 @@ Now, let's head straight for our last part - absolutely mind-blowing Graphback!
 
 
 
-<<<<<<< HEAD
  
 
 
 
-=======
->>>>>>> master
  
