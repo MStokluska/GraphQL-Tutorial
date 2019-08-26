@@ -31,12 +31,9 @@ const resolvers = {
                 assignedTo: args.assignedTo,
             };
 
-            let taskAssignedUser = users.find(u => u.id === args.assignedTo);
-            taskAssignedUser.taskId = taskAssignedUser.taskId + args.id;
-
             tasks.push(newTask);
 
-            return newTask;
+            return tasks;
         },
         removeTask(parent, args, context) {
             const taskIndex = tasks.findIndex(t => t.id === args.id);
