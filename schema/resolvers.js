@@ -3,7 +3,7 @@ const { tasks, users } = require('../db');
 const resolvers = {
     Task: {
         assignedTo(task) {
-            return users.filter(u => u.taskId.includes(task.id));
+            return users.filter(u => u.id.includes(task.assignedTo));
         },
     },
 
