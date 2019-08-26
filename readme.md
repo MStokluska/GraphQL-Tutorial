@@ -4,8 +4,8 @@ NOTE: THIS IS PART 3/4 FOR MY TUTORIAL THAT CAN BE FOUND ON DEV.TO LINK TO DEV.T
 # <center>GraphQL</center>
 ----
 
-GraphQL is a query language invented by Facebook and is an alternative approach to REST for designing and building APIs. Schema is at the center of any GraphQL server and describes functionality available to clients. Schema has types which define:
-- Relationships between entities - in our case it would be a relationship between users and tasks
+GraphQL is a query language invented by Facebook and is an alternative approach to REST for designing and building API. Schema is at the center of any GraphQL server and describes functionality available to clients. Schema has types which define:
+- Relationships between entities - in our case it would be a relationship between users and tasks 
 - Data manipulation and operation that can be executed by the client, in our project those will be for example queries to fetch all users or all tasks, and mutations to delete and add a user or a task.
 
 To build our GraphQL server we are going to use the "Schema First" approach, which basically prioritizes building schema in development. It allows me to visualize the data flow between entities and queries/mutations that I might require! We are also going to use Apollo framework for GraphQL server, a library that helps us connect our GraphQL schema to a node server, which is same as express framework for REST. 
