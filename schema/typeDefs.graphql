@@ -4,7 +4,6 @@ type User {
     lastName: String!
     title: String!
     email: String
-    taskId: ID!
 }
 
 type Task {
