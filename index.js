@@ -1,11 +1,9 @@
 const express = require('express');
-const cors = require('cors');
 const { ApolloServer } = require('apollo-server-express');
-const schema = require('./schema');
+const schema = require('./schema'); 
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
 
 const server = new ApolloServer({ schema });
