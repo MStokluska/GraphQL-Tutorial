@@ -32,7 +32,7 @@ const resolvers = {
 
             tasks.push(newTask);
 
-            return tasks;
+            return newTask;
         },
         removeTask(parent, args, context) {
             const taskIndex = tasks.findIndex(t => t.id === args.id);
