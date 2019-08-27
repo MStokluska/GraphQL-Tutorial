@@ -3,7 +3,7 @@ const { tasks, users } = require('../db');
 const resolvers = {
     Task: {
         assignedTo(task) {
-            return users.filter(u => u.id.includes(task.assignedTo));
+            return users.find(u => u.id === task.assignedTo);
         },
     },
 
@@ -16,10 +16,9 @@ const resolvers = {
             return users;
         },
 
-        userByName(parent, args, context, ) {
-            const findIndex = users.findIndex(u => u.firstName === args.firstName)
-            return users[findIndex]
-        }
+        userByName(parent, args, context,){
+            return users.find(u => u.firstName === args.firstName)
+        },
     },
     Mutation: {
         addTask(parent, args, context) {
