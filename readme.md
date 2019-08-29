@@ -4,11 +4,11 @@ NOTE: THIS IS PART 3/4 FOR MY TUTORIAL THAT CAN BE FOUND ON DEV.TO LINK TO DEV.T
 # <center>GraphQL</center>
 ----
 
-GraphQL is a query language invented by Facebook and is an alternative approach to REST for designing and building APIs. Schema is at the center of any GraphQL server and describes functionality available to clients. Schema has types which define:
+GraphQL is a query language invented by Facebook and is an alternative approach to REST for designing and building APIs. Schema is at the center of any GraphQL server and describes the functionality available to clients. Schema has types which define:
 - Relationships between entities - in our case it would be a relationship between users and tasks
-- Data manipulation and operation that can be executed by the client, in our project those will be for example queries to fetch all users or all tasks, and mutations to delete and add a user or a task.
+- Data manipulation and operation that can be executed by the client. In our project these will be queries to fetch all users or all tasks, and mutations to delete and add a user or a task.
 
-To build our GraphQL server we are going to use the "Schema First" approach, which basically prioritizes building schema in development. It allows me to visualize the data flow between entities and queries/mutations that I might require! We are also going to use Apollo framework for GraphQL server, a library that helps us connect our GraphQL schema to a node server, which is same as express framework for REST. 
+To build our GraphQL server we are going to use the "Schema First" approach. This basically prioritizes building schema in development. It allows for the visualisation of the data flow between entities and queries/mutations that might be require. We are also going to use Apollo framework for the GraphQL server. This is a library that helps us connect our GraphQL schema to a node server, which is the same as express framework for REST. 
 
 ## Requirements
 
@@ -16,7 +16,7 @@ To build our GraphQL server we are going to use the "Schema First" approach, whi
 
 ## Let's get started
 
-First, think about the schema, what are our entities going to be? What data are we planning to return? What does the client need? Imagine our project, with tasks and users, our GraphQL types will look something like this:
+First, think about the schema. What are our entities going to be? What data are we planning to return? What does the client need? Our project will have tasks and users so our GraphQL types will look something like this:
 
 ```
 type User {
@@ -35,13 +35,13 @@ type Task {
     assignedTo: [User!]!
 }
 ```
-We are defining two entities, a ``User`` and ``Task`` entity. Both have different attributes and return types. A client can access a ``User`` object or ``Task`` object and from there he can access any of the attributes given, however, ``assignedTo`` from ``Task`` returns a ``User`` object. Exclamation mark simply means `Required` so in our example of `assignedTo` - the return type is required to be of type an array of `Users`.
+We are defining two entities, a ``User`` and a ``Task``. Both have different attributes and return types. A client can access a ``User`` object or a``Task`` object and can then access any of the attributes given. However, ``assignedTo`` from ``Task`` returns a ``User`` object. An exclamation mark simply means `Required`, so in our example of `assignedTo` the return type is required to be an array of `Users`.
 
-- In your existing server project, use npm to add the following dependencies:
+- Navigate to the REST tutorial project in your terminal and use npm to add the following dependencies:
 ```sh
-$ npm install apollo-server-express graphql
+$ npm install apollo-server-express graphql graphql-import
 ```
-- Next, edit our ```index.js``` file.
+- Open Visual Studio Code and edit the ```index.js``` file. Replace all of the existing code with the following: 
 ```js
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
@@ -64,10 +64,10 @@ app.listen(port, () => {
   console.log(`🚀 Server is running at: http://localhost:${port}/graphql`);
 });
 ```
-We no longer need the REST methods so you can delete them. Next, we are adding Apollo Server to our project. Then, applying a schema ( that is yet to be implemented ) to our Apollo Server, finally, we can apply middleware to it, which is express and path - also called - endpoint.
+ Next, we are going to add Apollo Server and then apply a schema, that is yet to be implemented, to our Apollo Server. Finally, we will add Express and path middleware which is also known as endpoint.
 
-- Create a new folder within our `server` folder, called `schema`
-- In `schema` folder create a file called `typeDefs.graphql` which is going to hold types that we have specified above. Paste the following code:
+- Create a new folder called `schema` within the `server` folder
+- In this new folder create a file called `typeDefs.graphql` and insert the following code into this file:
 ```
 type User {
     id: ID!
@@ -85,14 +85,14 @@ type Task {
     assignedTo: [User!]!
 }
 ```
-- Next, we are adding type Query - which enables query support for given queries, for now, let's keep it simple and stick to our basic two queries, `tasks`, which allows a client to access a list of all tasks, and `users`, which allows accessing an entire array of users.
+- In the same file add a Query type. This enables query support for given queries but let's keep it simple and stick to our basic two queries, `tasks`, which allows a client to access to an array of tasks, and `users`, which allows access to an array of users.
 ```
 type Query {
     tasks: [Task!]!
     users: [User!]!
 }
 ```
-- Next, add another file called `resolvers.js` into `schema` folder and paste the following code:
+- In the same `schema` folder, add another file called `resolvers.js`and insert the following code:
 ```js
 const { tasks, users } = require('../db');
 
@@ -110,7 +110,7 @@ const resolvers = {
 
 module.exports = resolvers;
 ```
-Resolvers are simply functions resolving value for a type from typeDefs. They can return values like Strings, Numbers, Booleans etc. For example, the `users` resolver must return an array of `Users`. They are similar to HTTP handler functions that we saw in express, they implement the business logic and return a result.
+Resolvers are functions that resolve values for a type from typeDefs. They can return values like Strings, Numbers, Booleans etc. For example, the `users` resolver must return an array of `Users`. They are similar to HTTP handler functions that we saw in express where they implement the business logic and return a result.
 
 - Create `index.js` in `schema` folder and paste following code:
 ```js
@@ -121,7 +121,7 @@ const typeDefs = importSchema('schema/typeDefs.graphql');
 
 module.exports = makeExecutableSchema({ resolvers, typeDefs });
 ```
-In this step we have made an executable schema that contains both, our resolvers and typeDefs so it can be used in our ``index.js``
+The above code creates an executable schema that contains both our resolvers and typeDefs. The main ``index.js`` file should now include the two new lines of code indicated below:
 ```js
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
@@ -153,24 +153,23 @@ You have just launched GraphQL playground from your very first GraphQL server! I
 
 ![First Query](https://thepracticaldev.s3.amazonaws.com/i/c04ztnuycm9rl0q7pczu.png)
 
-- Line#2 ``query AnyNameOfQuery`` - in here you simply specify whether you are about to use query or mutation and you are naming your query/mutation.
-- Line#3 ``tasks{`` this is the name of our query specified in `typeDefs` file:
+- ``query AnyNameOfQuery`` specifies whether you are using a query or a mutation and you are also naming your query/mutation.
+- ``tasks{`` is the name of our query specified in our `typeDefs` file:
 ```
 tasks: [Task!]!
 ```
-- Line#4 & 5 specifies what are we interested in. We have specified in our typeDefs that query task is going to return an array of ``task`` objects.
+- Everything inside the curly braces specifies what are we interested in. We have specified in our typeDefs that query task is going to return an array of ``task`` objects.
 - Hit the play button in the middle of the playground and you should get the following response:
 
 ![First Response](https://thepracticaldev.s3.amazonaws.com/i/nkkd90xqxyfghssgr5ny.png)
 
 If you type in more than one query or mutation in the left window, play button should give you an option to choose which query/mutation you would like to execute. 
 
-When we execute the query `task` we have access to the full object, but we might only want a certain part of it! So in our example above, we have requested only title and description from an array of `tasks`. You might think, why would we set a name of our query if we are using the pre-named query from our typeDefs.
-The answer is - we don't have to! But imagine you are working on a client and you want to access tasks twice, once where you are only interested in titles, and other time when you are interested in descriptions only! Naming queries can be very helpful.
+When we execute the query `task` we have access to the full object, but we might only want a certain part of it! In our example above, we have requested only title and description from an array of `tasks`. You might be thinking why do we set a name for our query if we are using the pre-named query from our typeDefs. The answer is that we don't have to, but imagine you are working on a client and you want to access tasks twice. The first time you might be only interested in titles, and the second time you are only interested in descriptions. In situations like this naming queries can be very helpful.
 
-- Now, let's add `assignedTo` to our existing query, which is not going to work for now but I would like you to try it anyway to give you a better understanding the duty of the resolvers.
+- Now, let's add `assignedTo` to our existing query, which is not going to work for now but I would like you to try it anyway to give you a better understanding around the duty of the resolvers.
 
-Add `assignedTo{` and hit `ctrl + space`. You should see all the available data that GraphQL can fetch for you, all that information comes from types specified in `typeDefs`.
+Add `assignedTo{` and hit `ctrl + space`. You should see all the available types that is specified in `typeDefs` which GraphQL can fetch for you.
 
 - Let's say we are interested in `firstName` and `lastName` of our users.
 
@@ -195,7 +194,7 @@ const resolvers = {
 
 module.exports = resolvers;
 ```
-The reason why it is not working is that we must implement a new resolver to return the user that the task is assigned to.
+The reason why it gives an error is that we must implement a new resolver to return the user that the task is assigned to.
 
 - Let's specify what our assignedTo should do by adding the following code to the resolvers:
 
@@ -204,7 +203,7 @@ const resolvers = {
 
     Task: {
         assignedTo(task) {
-            return users.find(u => u.id === task.assignedTo);
+            return users.filter(u => u.id === task.assignedTo);
         },
     },
 
@@ -221,9 +220,9 @@ const resolvers = {
 ```
 So, when `assignedTo` is accessed, we are going to filter through an array of `users` and return a `user` that has the `id` of matching `assignedTo`. 
 
-Now our query should work just fine and I recommend you to play a little bit with queries in the playground to get a better understanding of GraphQL.
+The query should run error free now and I recommend you to play around with queries in the Playground to get a better understanding of GraphQL.
 
-- Next, let's add one more query to our server - let's say we would like our server to accept a user name and return with a `User` object of that name. First, we need to edit our ``typeDefs.graphql``:
+- Next, we will add one more query to our server. Let's say we would like the server to accept a user name and return a `User` object of that name. First, we need to edit our ``typeDefs.graphql``:
 ```
 type Query {
     tasks: [Task!]!
@@ -233,7 +232,7 @@ type Query {
 ```
 So our new `userByName` query is going to take in a string and is going to return a User object to us.
 
-- Now into resolvers:
+- Now into the resolvers.js input the new `userByName` query below:
 ```js
 Query: {
         tasks() {
@@ -258,7 +257,7 @@ What we are doing is equivalent to REST params!
 
 I think it would be a great practice for you to enable another query, let's say ``findUserById`` - give it a go yourself! 
 
-- Next, we are going to add our first mutation type! It would be useful if we could add tasks to our database, to start it we need to edit our typeDefs first:
+- Next we are going to add our first mutation type as it would be useful if we could add tasks to our database. We need to edit our typeDefs first:
 ```
 type Mutation {
     addTask(id: ID!, title: String!, description: String!, status: String!, assignedTo: ID!): Task!
@@ -310,20 +309,20 @@ const resolvers = {
 
 module.exports = resolvers;
 ```
-What we are doing in ``addTask`` mutation is:
-- Creating a new `task` based on passed in parameters
-- Push new `task` to the `task` array
+What we are doing in the ``addTask`` mutation is:
+- Creating a new `task` based on the parameters that are passed in
+- Push the new `task` to the `task` array
 - Return the newly created `task`
 
-You can view our newly created mutation in action by visiting the playground:
+You can view our newly created mutation in action by visiting the playground and entering the following code:
 
 ![new task mutation](https://thepracticaldev.s3.amazonaws.com/i/io6thze4xpnmaeootujl.png)
 
-- Our second mutation is going to be ``deleteTask`` mutation, again we start with `typeDefs.graphql` file:
+- Our second mutation is going to be ``removeTask`` mutation. Again we start with `typeDefs.graphql` file and insert the following code into the mutation type block:
 ```
 removeTask(id: ID!): [Task!]!
 ```
-- Next our resolvers:
+- In our resolvers.js enter `removeTask` as seen below :
 ```js
 const resolvers = {
 
@@ -343,7 +342,7 @@ const resolvers = {
         },
         
         userByName(parent, args, context,){
-            return users.find(u => u.firstName === args.firstName)
+            return users.filter(u => u.firstName === args.firstName)
         }
     },
     Mutation: {
@@ -375,9 +374,9 @@ And just like with the first mutation give it a try in the playground!
 
 ## Summary
 
-I think by now you should have a good idea what you can do with GraphQL and what is the difference between GraphQL and REST - all those queries and mutations we went through used one endpoint and the client dictates what he wants from the server which can hugely improve the speed of our responses! Another huge success of GraphQL is that it allows receiving many resources in a single request! Imagine that on one of your pages you need access to both tasks and user - you can do it by sending one query! To me, understanding GraphQL changed the way I look at client-server architecture - simply because I'm finding it so amazing and easy to work with that I regret I only got to know it now! I really do hope you will enjoy it as well!
+I think by now you should have a good idea what you can do with GraphQL and what is the difference between GraphQL and REST. All of the queries and mutations we went through used one endpoint, and the client dictates what it wants from the server which can hugely improve the speed of our responses. Another huge advantage with GraphQL is that it allows receiving many resources in a single request. So if you need access to both tasks and user you can do it by sending one query. Personally, understanding GraphQL has changed the way I now look at client-server architecture. I'm finding it so amazing and easy to work with, that I regret only getting to know it now. I really hope you will enjoy it as well!
 
-Now, let's head straight for our last part - absolutely mind-blowing [Graphback](https://dev.to/mstokluska/graphback-38en-temp-slug-5939347?preview=1896530eda5cbfedb0a4577a495ef66b1470d7d6327e75f108e3dfff33b527d1fd6285419679d44653956648ca0741e0e82fc84d545ede7e7faccaa5)! 
+Now, let's head straight for our last part, the absolutely mind-blowing [Graphback](https://dev.to/mstokluska/graphback-38en-temp-slug-5939347?preview=1896530eda5cbfedb0a4577a495ef66b1470d7d6327e75f108e3dfff33b527d1fd6285419679d44653956648ca0741e0e82fc84d545ede7e7faccaa5)! 
 
 
 
