@@ -3,7 +3,7 @@ const { tasks, users } = require('../db');
 const resolvers = {
     Task: {
         assignedTo(task) {
-            return users.find(u => u.id === task.assignedTo);
+            return users.filter(u => u.id === task.assignedTo);
         },
     },
 
@@ -17,7 +17,7 @@ const resolvers = {
         },
 
         userByName(parent, args, context,){
-            return users.find(u => u.firstName === args.firstName)
+            return users.filter(u => u.firstName === args.firstName)
         },
     },
     Mutation: {
